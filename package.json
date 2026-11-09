@@ -1,0 +1,33 @@
+{
+  "name": "lingo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_OPTIONS=--dns-result-order=ipv6first LIVE_DEBUG=$LIVE_DEBUG concurrently -k -n api,web \"tsx watch server/index.ts\" \"vite\"",
+    "build": "vue-tsc --noEmit && vite build",
+    "start": "NODE_ENV=production tsx server/index.ts",
+    "typecheck": "vue-tsc --noEmit && tsc -p tsconfig.server.json --noEmit"
+  },
+  "dependencies": {
+    "@google/genai": "^3.0.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "qrcode": "^1.5.4",
+    "tsx": "^4.23.15",
+    "ws": "^8.22.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "@types/qrcode": "^1.5.6",
+    "@types/ws": "^8.18.2",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "concurrently": "^10.0.6",
+    "playwright-core": "^1.65.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.6",
+    "vue": "^3.5.45",
+    "vue-tsc": "^3.3.14"
+  }
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box} body{margin:0;width:1600px;height:720px;background:#FAFAFC;font-family:'BIZ UDPGothic',sans-serif;color:#1d1b3a}
+.wrap{position:relative;width:1600px;height:720px;padding:24px 64px}
+.col{position:absolute;top:24px;bottom:60px}
+.box{border-radius:22px;background:#fff;box-shadow:0 6px 18px -10px rgba(40,30,120,.35);padding:22px 24px;border:2px solid #e6e4f5}
+h3{margin:0 0 10px;font-size:30px} p{margin:0;font-size:22px;line-height:1.55;color:#4a4766}
+.dev{left:64px;width:330px;display:flex;flex-direction:column;gap:24px;justify-content:center}
+.dev .box h3{color:#4b39ef}
+.run{left:520px;width:420px;display:flex;align-items:center}
+.run .box{width:100%;border-color:#4285f4;border-width:3px}
+.run h3{color:#1a56c4}
+.ai{left:1070px;width:466px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.ai .box{border-color:#e8487f55}
+.ai h3{color:#c2185b;font-size:23px}
+.tag{display:inline-block;font-size:15px;font-weight:700;color:#fff;background:#4285f4;border-radius:999px;padding:3px 12px;margin-bottom:10px}
+.tag.v{background:#c2185b}
+.arrow{position:absolute;height:4px;background:#8b86b8}
+.arrow:after{content:'';position:absolute;right:-2px;top:-8px;border:10px solid transparent;border-left:14px solid #8b86b8}
+.arrow.l:before{content:'';position:absolute;left:-12px;top:-8px;border:10px solid transparent;border-right:14px solid #8b86b8}
+.lbl{position:absolute;font-size:17px;color:#4a4766;text-align:center;width:140px;line-height:1.4}
+.title{font-size:34px;font-weight:700;margin:0}
+.foot{position:absolute;left:64px;bottom:26px;font-size:17px;color:#6b6890}
+</style></head><body><div class="wrap">
+<div class="col dev">
+ <div class="box"><h3>スタッフの端末</h3><p>タブレット／PCのブラウザ<br>部屋を作り、QRを表示</p></div>
+ <div class="box"><h3>旅行者のスマホ</h3><p>QRを読むだけで参加<br>インストール・ログイン不要</p></div>
+</div>
+<div class="arrow l" style="left:410px;width:96px;top:322px"></div>
+<div class="lbl" style="left:388px;top:242px">WebSocket<br>音声・字幕</div>
+<div class="col run"><div class="box">
+ <span class="tag">Google Cloud</span>
+ <h3>Cloud Run</h3>
+ <p>Node.js（Express＋ws）<br>Vue 3 の画面を配信<br>話し手の音声（16kHz）を中継し、<br>聞き手の言語ごとに翻訳を配る<br><br>Vertex AI へは<br>サービスアカウントで接続<br>（APIキーはブラウザに出さない）</p>
+</div></div>
+<div class="arrow l" style="left:968px;width:86px;top:322px"></div>
+<div class="col ai">
+ <div class="box"><span class="tag v">Vertex AI</span><h3>Gemini Live API（音声翻訳）</h3><p>話している途中から字幕と翻訳音声を返す</p></div>
+ <div class="box"><h3>Gemini 3.8 Flash</h3><p>感情推定・聞き取りの補正<br>重要情報の確認・返信の判定<br>写真の説明・要約</p></div>
+ <div class="box"><h3>Gemini TTS</h3><p>気持ちをこめた翻訳音声</p></div>
+</div>
+<p class="foot">音声は保存しません。会話の文字は会話の終了時に削除します。</p>
+</div></body></html>

@@ -1,0 +1,71 @@
+/* Cyrillic/Greek from a Latin system face: the UD font (and Japanese system fonts) draw them full-width */
+@font-face { font-family: 'LatinExt'; src: local('Helvetica Neue'), local('HelveticaNeue'), local('Arial'), local('Roboto'), local('Segoe UI'); unicode-range: U+0370-03FF, U+0400-052F; }
+@font-face { font-family: 'LatinExt'; font-weight: 700; src: local('Helvetica Neue Bold'), local('HelveticaNeue-Bold'), local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Segoe UI Bold'); unicode-range: U+0370-03FF, U+0400-052F; }
+:root {
+  /* Astryx-style neutral system: quiet grayscale surfaces, one black primary per group,
+     color only for status (warning / error / success), brand violet only for "my" messages. */
+  --green-900: #0a0a0a;
+  --green-800: #171717; /* primary emphasis (was green) */
+  --green-600: #171717;
+  --green-100: #ededed;
+  --green-50: #f5f5f5;
+  --teal: #171717;
+  --coral: #ff7a59;
+  --sun: #ffce2f;
+  --sky: #f0f0f0;
+  --violet: #4b39ef;
+  --chat-bg: #f5f5f5;
+  --cream: #fafafa;
+  --gray-50: #f5f5f5;
+  --gray-100: #ededed;
+  --gray-200: #e5e5e5;
+  --gray-500: #5c5c5c;
+  --gray-700: #3d3d3d;
+  --ink: #171717;
+  --blue-50: #eef4fd;
+  --blue-700: #0b5cb5;
+  --peach: #fdf0e3;
+  --red: #c9303a;
+  /* status */
+  --success: #198100;
+  --warn: #ffce2f;
+  --warn-bg: #fff8e1;
+  --warn-ink: #5c4400;
+  --error: #c9303a;
+  --error-bg: #fdecec;
+  /* "me" bubbles keep the brand violet, softly */
+  --me-bg: #eeedfd;
+  --me-line: #d9d6fb;
+  --border: #e5e5e5;
+  /* radius by role: inner content / controls / cards / sheets */
+  --r-inner: 6px;
+  --r-el: 10px;
+  --r-con: 12px;
+  --r-page: 28px;
+  --radius-lg: 12px;
+  --radius-md: 10px;
+  /* motion */
+  --fast: 125ms;
+  --medium: 300ms;
+  font-family: 'Figtree', 'LatinExt', 'BIZ UDPGothic', 'Hiragino Sans', 'Noto Sans JP', 'Noto Sans', system-ui, sans-serif;
+  caret-color: var(--ink);
+  accent-color: var(--ink);
+  color: var(--ink);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+html, body, #app { margin: 0; height: 100%; }
+/* the visible area (excludes the phone browser's own toolbars, which can float over the page) */
+@supports (height: 100dvh) { html, body, #app { height: 100dvh; } }
+body { overscroll-behavior: none; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+input { font: inherit; }
+::placeholder { color: #6b6b6b; opacity: 1; } /* ≥4.5:1 on the light input fields */
+.logo { display: inline-flex; align-items: center; gap: .3em; }
+.logo .mark { width: 1.15em; height: 1.15em; border-radius: 26%; flex: none; }
+::selection { background: #d8d3ff; color: #14201b; }
+* { scrollbar-width: thin; scrollbar-color: #c9c9d4 transparent; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

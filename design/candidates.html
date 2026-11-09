@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>lingo — スマホUI 候補</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Sans+JP:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 24px 48px; background: #e9ece9; font-family: "Zen Kaku Gothic New", system-ui, sans-serif; color: #1d2320; }
+  h1 { margin: 0 0 6px; font-size: 22px; }
+  .lead { margin: 0 0 28px; color: #4c5551; font-size: 14px; }
+  .grid { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  figcaption { width: 375px; }
+  figcaption b { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: #1d2320; color: #fff; align-items: center; justify-content: center; margin-right: 8px; }
+  figcaption strong { font-size: 17px; }
+  figcaption p { margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: #4c5551; }
+  .phone { width: 375px; height: 812px; border-radius: 44px; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 30px 60px -20px rgba(0,0,0,.35), 0 0 0 10px #111, 0 0 0 11px #333; }
+  .sb { height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; font-size: 14px; font-weight: 700; }
+  svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  button { font: inherit; border: 0; background: none; color: inherit; padding: 0; }
+  .scroll { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+  .t-orig { display: block; }
+  .phone .feed, .phone .hist { min-height: 0; overflow: hidden; }
+</style>
+
+<!-- ───────────────── A: 路線図 (transit) ───────────────── -->
+<style>
+  .A { background: #f7f8fa; font-family: "IBM Plex Sans JP", sans-serif; color: #12233d; }
+  .A .sb { background: #12233d; color: #fff; }
+  .A header { background: #12233d; color: #fff; padding: 6px 18px 14px; display: flex; align-items: center; gap: 10px; }
+  .A .logo { font-weight: 700; font-size: 22px; letter-spacing: -.01em; }
+  .A .logo span { color: #ffc72c; }
+  .A .who { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .A .who i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; display: inline-block; }
+  .A .hbtn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.12); display: inline-flex; align-items: center; justify-content: center; }
+  .A .feed { flex: 1; padding: 18px 16px 8px; position: relative; display: flex; flex-direction: column; gap: 0; }
+  /* the line: one continuous track down the middle-left, stations = messages */
+  .A .track { position: absolute; left: 33px; top: 30px; bottom: 0; width: 4px; background: #d5dbe5; border-radius: 2px; }
+  .A .st { position: relative; display: grid; grid-template-columns: 40px 1fr; gap: 10px; padding-bottom: 14px; }
+  .A .dot { width: 22px; height: 22px; margin: 6px 0 0 8px; border-radius: 50%; background: #fff; border: 4px solid #12233d; position: relative; z-index: 1; }
+  .A .st.them .dot { border-color: #e4572e; }
+  .A .st.live .dot { border-color: #e4572e; background: #e4572e; animation: ap 1.2s infinite; }
+  @keyframes ap { 50% { box-shadow: 0 0 0 6px rgba(228,87,46,.2); } }
+  .A .meta { font-size: 11px; font-weight: 700; display: flex; gap: 8px; align-items: center; color: #5b6b82; letter-spacing: .02em; }
+  .A .meta .nm { color: #12233d; }
+  .A .st.them .meta .nm { color: #c43e18; }
+  .A .tx { font-size: 18px; font-weight: 700; line-height: 1.45; margin: 2px 0 0; }
+  .A .or { font-size: 12.5px; color: #5b6b82; margin: 2px 0 0; }
+  .A .tag { font-size: 10.5px; font-weight: 700; border: 1.5px solid currentColor; border-radius: 4px; padding: 0 5px; }
+  .A .st.them .tag { color: #c43e18; }
+  .A .ok { margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1.5px solid #d5dbe5; border-radius: 8px; padding: 4px 9px; font-size: 12.5px; font-weight: 700; }
+  .A .ok .c { width: 16px; height: 16px; border-radius: 50%; background: #2a9d5c; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .A .play { margin-left: auto; width: 30px; height: 30px; border-radius: 50%; background: #12233d; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .A .play svg { width: 14px; height: 14px; }
+  .A .bottom { background: #fff; border-top: 1px solid #e3e7ee; padding: 12px 16px 28px; display: flex; flex-direction: column; gap: 10px; }
+  .A .talk { height: 64px; border-radius: 16px; background: #ffc72c; color: #12233d; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .A .row { display: flex; gap: 8px; }
+  .A .field { flex: 1; height: 46px; border-radius: 12px; background: #f1f3f7; display: flex; align-items: center; padding: 0 12px; color: #7c8aa0; font-size: 15px; gap: 8px; }
+  .A .field svg { margin-left: auto; color: #12233d; }
+  .A .sq { width: 46px; height: 46px; border-radius: 12px; background: #f1f3f7; display: inline-flex; align-items: center; justify-content: center; }
+</style>
+
+<!-- ───────────────── B: 和紙と朱 (washi & seal) ───────────────── -->
+<style>
+  .B { background: #f4efe4; font-family: "Zen Kaku Gothic New", sans-serif; color: #26221d; }
+  .B .sb { color: #26221d; }
+  .B header { padding: 4px 20px 12px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #e2d8c6; }
+  .B .logo { font-family: "Zen Old Mincho", serif; font-size: 26px; font-weight: 700; }
+  .B .pill { margin-left: auto; font-size: 12px; padding: 5px 10px; border-radius: 999px; border: 1px solid #cbbfa9; display: inline-flex; gap: 6px; align-items: center; }
+  .B .hbtn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #cbbfa9; display: inline-flex; align-items: center; justify-content: center; }
+  .B .feed { flex: 1; padding: 14px 18px 8px; display: flex; flex-direction: column; gap: 12px; }
+  .B .msg { max-width: 82%; }
+  .B .msg.me { align-self: flex-end; }
+  .B .nm { font-size: 11.5px; color: #8a7d68; margin: 0 0 4px 2px; }
+  .B .card { background: #fffdf8; border: 1px solid #e2d8c6; border-radius: 4px 18px 18px 18px; padding: 10px 14px; box-shadow: 0 6px 14px -10px rgba(80,60,20,.35); position: relative; }
+  .B .me .card { background: #26221d; color: #f4efe4; border-color: #26221d; border-radius: 18px 4px 18px 18px; }
+  .B .tx { font-size: 17px; line-height: 1.55; margin: 0; font-weight: 500; }
+  .B .or { font-size: 12.5px; color: #8a7d68; margin: 4px 0 0; }
+  .B .me .or { color: #b7ab96; }
+  .B .reply { font-size: 11.5px; color: #8a7d68; margin: 0 0 6px; padding-left: 10px; border-left: 1px solid #cbbfa9; }
+  .B .me .reply { color: #b7ab96; border-color: #5b5246; }
+  .B .seal { position: absolute; right: -10px; bottom: -12px; width: 50px; height: 50px; border-radius: 50%; border: 2.5px solid #c8322a; color: #c8322a; font-family: "Zen Old Mincho", serif; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; transform: rotate(-12deg); background: rgba(255,253,248,.85); }
+  .B .fact { padding-right: 34px; margin-top: 8px; font-size: 12.5px; color: #c8322a; font-weight: 700; }
+  .B .listen { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12.5px; color: #26221d; }
+  .B .listen span { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #26221d; display: inline-flex; align-items: center; justify-content: center; }
+  .B .listen svg { width: 13px; height: 13px; }
+  .B .live .card { border-style: dashed; }
+  .B .bottom { padding: 12px 18px 30px; display: flex; align-items: center; gap: 14px; border-top: 1px solid #e2d8c6; }
+  .B .field { flex: 1; height: 48px; border-bottom: 1.5px solid #26221d; display: flex; align-items: center; color: #8a7d68; font-size: 15px; gap: 8px; }
+  .B .field svg { margin-left: auto; }
+  .B .mic { width: 76px; height: 76px; border-radius: 50%; background: #c8322a; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; gap: 2px; box-shadow: 0 10px 20px -8px rgba(200,50,42,.6); }
+  .B .mic svg { width: 26px; height: 26px; }
+</style>
+
+<!-- ───────────────── C: ポップなチャット (bright chat) ───────────────── -->
+<style>
+  .C { background: #eaf6ff; font-family: "M PLUS Rounded 1c", sans-serif; color: #17324d; }
+  .C .sb { color: #17324d; }
+  .C header { padding: 4px 16px 10px; display: flex; align-items: center; gap: 10px; }
+  .C .logo { font-size: 26px; font-weight: 800; color: #0a9a6a; }
+  .C .chip { margin-left: auto; font-size: 13px; font-weight: 700; padding: 8px 12px; border-radius: 999px; background: #fff; display: inline-flex; gap: 6px; align-items: center; box-shadow: 0 2px 6px rgba(23,50,77,.08); }
+  .C .hbtn { width: 40px; height: 40px; border-radius: 50%; background: #fff; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(23,50,77,.08); }
+  .C .day { align-self: center; font-size: 11px; font-weight: 700; background: rgba(23,50,77,.08); padding: 3px 10px; border-radius: 999px; }
+  .C .feed { flex: 1; padding: 6px 14px 10px; display: flex; flex-direction: column; gap: 10px; }
+  .C .m { display: flex; gap: 8px; align-items: flex-end; }
+  .C .m.me { flex-direction: row-reverse; }
+  .C .av { width: 34px; height: 34px; border-radius: 50%; background: #ffd166; color: #6b4d00; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; flex: none; align-self: flex-start; }
+  .C .col { display: flex; flex-direction: column; gap: 3px; max-width: 76%; }
+  .C .me .col { align-items: flex-end; }
+  .C .nm { font-size: 11.5px; font-weight: 700; color: #4d6a85; }
+  .C .bub { background: #fff; border-radius: 6px 20px 20px 20px; padding: 10px 13px; box-shadow: 0 2px 6px rgba(23,50,77,.06); }
+  .C .me .bub { background: #06c27a; color: #fff; border-radius: 20px 6px 20px 20px; }
+  .C .tx { font-size: 17px; font-weight: 700; line-height: 1.45; margin: 0; }
+  .C .or { font-size: 12px; margin: 3px 0 0; color: #6c8299; font-weight: 500; }
+  .C .me .or { color: #d4f7e8; }
+  .C .side { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10.5px; color: #6c8299; flex: none; }
+  .C .pl { width: 32px; height: 32px; border-radius: 50%; background: #17324d; color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .C .pl svg { width: 14px; height: 14px; }
+  .C .rp { font-size: 11.5px; display: flex; align-items: center; gap: 6px; color: #4d6a85; margin: 2px 0 0 42px; position: relative; padding-left: 22px; }
+  .C .rp::before { content: ''; position: absolute; left: 0; top: 9px; width: 16px; height: 12px; border-left: 2.5px solid #8fb3ff; border-top: 2.5px solid #8fb3ff; border-top-left-radius: 8px; }
+  .C .me-rp { align-self: flex-end; margin: 2px 42px 0 0; }
+  .C .rp b { background: #8fb3ff; color: #fff; border-radius: 999px; padding: 0 7px; font-size: 10.5px; }
+  .C .ok { margin-top: 6px; font-size: 12px; font-weight: 800; background: rgba(255,255,255,.25); border-radius: 8px; padding: 3px 8px; display: inline-flex; gap: 4px; align-items: center; }
+  .C .live .bub { border: 2px dashed #ff7a59; }
+  .C .bottom { background: #fff; border-radius: 26px 26px 0 0; padding: 14px 16px 28px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 -6px 20px rgba(23,50,77,.08); }
+  .C .talk { height: 68px; border-radius: 22px; background: #06c27a; color: #fff; display: flex; align-items: center; gap: 14px; padding: 0 16px; font-weight: 800; font-size: 18px; }
+  .C .talk span { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.25); display: inline-flex; align-items: center; justify-content: center; }
+  .C .row { display: flex; gap: 8px; }
+  .C .field { flex: 1; height: 48px; border-radius: 16px; border: 1.5px solid #d6e4f0; display: flex; align-items: center; padding: 0 14px; color: #8aa0b5; font-size: 15px; }
+  .C .field svg { margin-left: auto; color: #17324d; }
+  .C .sq { width: 48px; height: 48px; border-radius: 16px; border: 1.5px solid #d6e4f0; display: inline-flex; align-items: center; justify-content: center; }
+</style>
+
+<!-- ───────────────── D: いまの一言 (stage + history) ───────────────── -->
+<style>
+  .D { background: #fff; font-family: "BIZ UDPGothic", sans-serif; color: #1b1b1f; }
+  .D .sb { color: #1b1b1f; }
+  .D header { padding: 2px 16px 8px; display: flex; align-items: center; gap: 10px; }
+  .D .logo { font-size: 22px; font-weight: 700; }
+  .D .pp { margin-left: auto; display: flex; }
+  .D .pp i { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-style: normal; font-weight: 700; margin-left: -6px; }
+  .D .hbtn { width: 40px; height: 40px; border-radius: 12px; background: #f2f2f4; display: inline-flex; align-items: center; justify-content: center; }
+  /* stage: the line being said right now, huge, in the viewer's language */
+  .D .stage { margin: 4px 12px 0; border-radius: 28px; background: #5a3df5; color: #fff; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .D .sl { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #d9d2ff; }
+  .D .sl i { width: 9px; height: 9px; border-radius: 50%; background: #ff8a65; animation: ap 1.2s infinite; }
+  .D .big { font-size: 28px; font-weight: 700; line-height: 1.35; margin: 2px 0 0; }
+  .D .big em { font-style: normal; color: #ffd36b; }
+  .D .sor { font-size: 14px; color: #d9d2ff; margin: 0; }
+  .D .wave { margin-top: 4px; display: flex; gap: 4px; align-items: center; height: 26px; }
+  .D .wave b { width: 4px; border-radius: 2px; background: #fff; opacity: .8; }
+  .D .hist { flex: 1; padding: 14px 16px 6px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .D .hh { font-size: 12px; font-weight: 700; color: #6d6d78; }
+  .D .h { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: start; }
+  .D .h i { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10.5px; font-style: normal; font-weight: 700; }
+  .D .h p { margin: 0; font-size: 15.5px; line-height: 1.45; }
+  .D .h small { display: block; font-size: 12px; color: #6d6d78; }
+  .D .h .tick { font-size: 11px; font-weight: 700; color: #1a7f4b; background: #e3f6ea; border-radius: 6px; padding: 2px 6px; display: inline-block; margin-top: 4px; }
+  .D .h .p { width: 30px; height: 30px; border-radius: 50%; background: #f2f2f4; display: inline-flex; align-items: center; justify-content: center; }
+  .D .h .p svg { width: 13px; height: 13px; }
+  .D .h.reply { position: relative; }
+  .D .h.reply::before { content: ''; position: absolute; left: 12px; top: -12px; height: 12px; border-left: 2px solid #c9c2ff; }
+  .D .bottom { padding: 10px 16px 28px; display: flex; gap: 10px; align-items: center; }
+  .D .field { flex: 1; height: 52px; border-radius: 18px; background: #f2f2f4; display: flex; align-items: center; padding: 0 14px; color: #6d6d78; font-size: 15px; }
+  .D .field svg { margin-left: auto; color: #1b1b1f; }
+  .D .mic { height: 64px; padding: 0 22px; border-radius: 22px; background: #1b1b1f; color: #fff; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></symbol>
+    <symbol id="cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="set" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+    <symbol id="qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></symbol>
+    <symbol id="chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="glb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  </svg>
+
+  <h1>lingo スマホ画面 — デザイン候補（スタッフ側・同じ会話）</h1>
+  <p class="lead">同じ会話（ベジタリアンメニュー → 値段 1,200円 を確認済み → 相手が今アレルギーについて話している）を4つの方向で描いています。</p>
+
+  <div class="grid">
+    <!-- A -->
+    <figure>
+      <div class="phone A">
+        <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+        <header>
+          <span class="logo">lingo<span>.</span></span>
+          <span class="who"><i></i>Emma と接続中</span>
+          <button class="hbtn"><svg class="i"><use href="#qr"/></svg></button>
+        </header>
+        <div class="feed">
+          <div class="track"></div>
+          <div class="st them"><span class="dot"></span><div>
+            <div class="meta"><span class="nm">Emma</span><span class="tag">英語</span><span>14:02</span><button class="play"><svg class="i"><use href="#play"/></svg></button></div>
+            <p class="tx">ベジタリアン向けのメニューはありますか？</p><p class="or">Do you have a vegetarian menu?</p></div></div>
+          <div class="st"><span class="dot"></span><div>
+            <div class="meta"><span class="nm">あなた</span><span>↳ 返信</span><span>14:02</span></div>
+            <p class="tx">はい、野菜ラーメンがございます。</p><p class="or">Yes, we have a vegetable ramen.</p></div></div>
+          <div class="st them"><span class="dot"></span><div>
+            <div class="meta"><span class="nm">Emma</span><span>↳ 返信</span><span>14:03</span><button class="play"><svg class="i"><use href="#play"/></svg></button></div>
+            <p class="tx">いくらですか？</p><p class="or">How much is it?</p></div></div>
+          <div class="st"><span class="dot"></span><div>
+            <div class="meta"><span class="nm">あなた</span><span>↳ 返信</span><span>14:03</span></div>
+            <p class="tx">1,200円です。</p><p class="or">It's 1,200 yen.</p>
+            <span class="ok"><span class="c"><svg class="i" style="width:11px;height:11px;stroke-width:3"><use href="#chk"/></svg></span>金額を確認済み · ¥1,200 = 1,200 yen</span></div></div>
+          <div class="st them live"><span class="dot"></span><div>
+            <div class="meta"><span class="nm">Emma が話しています…</span></div>
+            <p class="tx" style="opacity:.55">ピーナッツのアレルギーが…</p></div></div>
+        </div>
+        <div class="bottom">
+          <button class="talk"><svg class="i"><use href="#mic"/></svg>タップして話す</button>
+          <div class="row"><div class="field">メッセージを入力<svg class="i"><use href="#cam"/></svg></div><button class="sq"><svg class="i"><use href="#set"/></svg></button></div>
+        </div>
+      </div>
+      <figcaption><b>A</b><strong>路線図</strong><p>会話を1本の線（駅の路線図）で上から下へつなぐ。相手は朱色、自分は紺の駅。誰の番か・流れが縦一列で一目で追える。紺×黄色の駅案内カラーで屋外でも見やすい。</p></figcaption>
+    </figure>
+
+    <!-- B -->
+    <figure>
+      <div class="phone B">
+        <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+        <header>
+          <span class="logo">lingo</span>
+          <span class="pill"><svg class="i" style="width:14px;height:14px"><use href="#glb"/></svg>Emma · English</span>
+          <button class="hbtn"><svg class="i" style="width:18px;height:18px"><use href="#qr"/></svg></button>
+        </header>
+        <div class="feed">
+          <div class="msg"><p class="nm">Emma · 14:02</p><div class="card"><p class="tx">ベジタリアン向けのメニューはありますか？</p><p class="or">Do you have a vegetarian menu?</p><div class="listen"><span><svg class="i"><use href="#play"/></svg></span>聞く</div></div></div>
+          <div class="msg me"><div class="card"><p class="reply">Emma「ベジタリアン向けの…」への返信</p><p class="tx">はい、野菜ラーメンがございます。</p><p class="or">Yes, we have a vegetable ramen.</p></div></div>
+          <div class="msg"><p class="nm">Emma · 14:03</p><div class="card"><p class="tx">いくらですか？</p><p class="or">How much is it?</p></div></div>
+          <div class="msg me"><div class="card"><p class="tx">1,200円です。</p><p class="or">It's 1,200 yen.</p><p class="fact">¥1,200 = 1,200 yen</p><span class="seal">確認</span></div></div>
+          <div class="msg live"><p class="nm">Emma が話しています…</p><div class="card"><p class="tx" style="opacity:.5">ピーナッツのアレルギーが…</p></div></div>
+        </div>
+        <div class="bottom">
+          <div class="field">文字で送る<svg class="i"><use href="#cam"/></svg></div>
+          <button class="mic"><svg class="i"><use href="#mic"/></svg>話す</button>
+        </div>
+      </div>
+      <figcaption><b>B</b><strong>和紙と朱印</strong><p>生成りの紙と墨の文字、朱色は「確認済み」のハンコだけに使う。落ち着いた和の店・旅館向け。大事な事実が確認されると判子が押される。話すボタンは丸い朱の印。</p></figcaption>
+    </figure>
+
+    <!-- C -->
+    <figure>
+      <div class="phone C">
+        <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+        <header>
+          <span class="logo">lingo</span>
+          <span class="chip"><svg class="i" style="width:16px;height:16px"><use href="#glb"/></svg>Emma · English</span>
+          <button class="hbtn"><svg class="i" style="width:19px;height:19px"><use href="#qr"/></svg></button>
+        </header>
+        <div class="feed">
+          <span class="day">今日 14:02</span>
+          <div class="m"><span class="av">EM</span><div class="col"><span class="nm">Emma</span><div class="bub"><p class="tx">ベジタリアン向けのメニューはありますか？</p><p class="or">Do you have a vegetarian menu?</p></div></div><div class="side"><button class="pl"><svg class="i"><use href="#play"/></svg></button>14:02</div></div>
+          <div class="rp me-rp"><b>返信</b>Emma ベジタリアン向けの…</div>
+          <div class="m me"><div class="col"><div class="bub"><p class="tx">はい、野菜ラーメンがございます。</p><p class="or">Yes, we have a vegetable ramen.</p></div></div><div class="side">14:02</div></div>
+          <div class="m"><span class="av">EM</span><div class="col"><div class="bub"><p class="tx">いくらですか？</p><p class="or">How much is it?</p></div></div><div class="side"><button class="pl"><svg class="i"><use href="#play"/></svg></button>14:03</div></div>
+          <div class="m me"><div class="col"><div class="bub"><p class="tx">1,200円です。</p><p class="or">It's 1,200 yen.</p><span class="ok"><svg class="i" style="width:13px;height:13px;stroke-width:3"><use href="#chk"/></svg>金額 確認済み</span></div></div><div class="side">14:03</div></div>
+          <div class="m live"><span class="av">EM</span><div class="col"><span class="nm">Emma が話しています…</span><div class="bub"><p class="tx" style="opacity:.5">ピーナッツのアレルギーが…</p></div></div></div>
+        </div>
+        <div class="bottom">
+          <button class="talk"><span><svg class="i"><use href="#mic"/></svg></span>タップして話す</button>
+          <div class="row"><div class="field">メッセージを入力<svg class="i"><use href="#cam"/></svg></div><button class="sq"><svg class="i"><use href="#set"/></svg></button></div>
+        </div>
+      </div>
+      <figcaption><b>C</b><strong>ポップなチャット</strong><p>今の方向性を磨いた版。LINEのような左右の吹き出し、返信は曲線でつなぐ。明るい空色と緑で家族向け・観光地向けに親しみやすい。いちばん「見慣れた」形。</p></figcaption>
+    </figure>
+
+    <!-- D -->
+    <figure>
+      <div class="phone D">
+        <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+        <header>
+          <span class="logo">lingo</span>
+          <span class="pp"><i style="background:#ffe08a">あ</i><i style="background:#c9c2ff">EM</i></span>
+          <button class="hbtn"><svg class="i" style="width:19px;height:19px"><use href="#qr"/></svg></button>
+        </header>
+        <div class="stage">
+          <span class="sl"><i></i>Emma が話しています · 英語 → 日本語</span>
+          <p class="big">ピーナッツの<em>アレルギー</em>があります。入っていますか？</p>
+          <p class="sor">I'm allergic to peanuts. Is there any in it?</p>
+          <div class="wave"><b style="height:10px"></b><b style="height:22px"></b><b style="height:14px"></b><b style="height:26px"></b><b style="height:12px"></b><b style="height:18px"></b><b style="height:8px"></b></div>
+        </div>
+        <div class="hist">
+          <span class="hh">これまでの会話</span>
+          <div class="h"><i style="background:#c9c2ff">EM</i><p>ベジタリアン向けのメニューはありますか？<small>Do you have a vegetarian menu?</small></p><button class="p"><svg class="i"><use href="#play"/></svg></button></div>
+          <div class="h reply"><i style="background:#ffe08a">あ</i><p>はい、野菜ラーメンがございます。<small>Yes, we have a vegetable ramen.</small></p><span></span></div>
+          <div class="h reply"><i style="background:#c9c2ff">EM</i><p>いくらですか？<small>How much is it?</small></p><button class="p"><svg class="i"><use href="#play"/></svg></button></div>
+          <div class="h reply"><i style="background:#ffe08a">あ</i><p>1,200円です。<small>It's 1,200 yen.</small><span class="tick">✓ 金額 確認済み</span></p><span></span></div>
+        </div>
+        <div class="bottom">
+          <div class="field">文字で送る<svg class="i"><use href="#cam"/></svg></div>
+          <button class="mic"><svg class="i"><use href="#mic"/></svg>話す</button>
+        </div>
+      </div>
+      <figcaption><b>D</b><strong>いまの一言を大きく</strong><p>画面の上半分は「今話されている一言」を特大の文字で表示（相手に画面を見せても伝わる）。下に履歴を小さく。会話の流れより「今なにを言ったか」が一瞬でわかる。UDフォントで高齢の方にも読みやすい。</p></figcaption>
+    </figure>
+  </div>
+</body>
+</html>
