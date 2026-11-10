@@ -20,7 +20,7 @@ const ja = {
   phaseOpening: "マイクを準備中… まだ話さないでください",
   phaseReady: "どうぞ、話してください",
   phaseHeard: "聞き取り中",
-  phaseHeardHint: "話し終わって少し黙ると、自動で送ります",
+  phaseHeardHint: "話し終わると、自動で送ります",
   phaseSending: "送りました。翻訳しています",
   phaseTail: "まもなく送信",
   sendNow: "今すぐ送る",
