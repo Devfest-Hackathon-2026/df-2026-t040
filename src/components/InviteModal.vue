@@ -46,8 +46,15 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
         <h2 id="inv-title">ルームに招待</h2>
         <button v-if="!inline || closable" class="x" aria-label="閉じる" @click="emit('close')"><Icon name="close" /></button>
       </header>
-      <p class="lead">QRを読み取るとこの会話に参加できます</p>
-      <div class="pillRow"><span class="pill">{{ room.participants.length }} / {{ room.capacity }} 人</span></div>
+      <!-- shown to the guest: how to join, as a picture + one bilingual line -->
+      <div class="howto">
+        <img src="/guide/scan.webp" alt="" />
+        <div class="howtoText">
+          <strong>スマホのカメラで<br />QRを読み取って<br class="nbr" />ください</strong>
+          <span lang="en">Scan this QR with your phone camera</span>
+          <span class="pill">{{ room.participants.length }} / {{ room.capacity }} 人</span>
+        </div>
+      </div>
       <div class="qrBox" :class="{ dim: expired || full }">
         <img v-if="qr" :src="qr" alt="参加用QRコード" />
         <div v-if="expired || full" class="over">
@@ -67,21 +74,25 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
 
 <style scoped>
 .scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, .4); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
-.sheet { background: #fff; border-radius: 28px; padding: 22px 22px 18px; width: min(420px, 100%); box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+.sheet { background: #fff; border-radius: var(--r-page); padding: 22px 22px 18px; width: min(420px, 100%); box-shadow: 0 20px 60px rgba(0,0,0,.2); }
 header { display: flex; align-items: center; justify-content: space-between; }
-h2 { margin: 0; font-size: 24px; }
-.x { width: 48px; height: 48px; border-radius: 50%; background: var(--gray-50); display: inline-flex; align-items: center; justify-content: center; }
-.lead { margin: 6px 0 12px; font-size: 13px; color: var(--gray-500); }
-.pillRow { display: flex; justify-content: flex-end; }
-.pill { font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 999px; background: var(--green-100); color: var(--green-800); }
-.qrBox { position: relative; margin: 12px 0 8px; background: var(--gray-50); border-radius: 24px; padding: 18px; display: flex; justify-content: center; }
+h2 { margin: 0; font-size: 22px; }
+.x { width: 40px; height: 40px; border-radius: var(--r-el); background: var(--gray-50); display: inline-flex; align-items: center; justify-content: center; }
+.howto { margin: 12px 0 0; display: flex; align-items: center; gap: 12px; background: var(--me-bg); border-radius: var(--r-con); padding: 10px 14px 10px 6px; }
+.howto img { width: 112px; height: auto; flex: none; mix-blend-mode: multiply; }
+.howtoText { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.howtoText strong { font-size: 15px; line-height: 1.4; }
+@media (min-width: 420px) { .nbr { display: none; } }
+.howtoText span[lang] { font-size: 12.5px; color: var(--gray-700); }
+.pill { align-self: flex-start; margin-top: 2px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #fff; color: var(--gray-700); font-variant-numeric: tabular-nums; }
+.qrBox { position: relative; margin: 12px 0 8px; background: #fff; border: 1px solid var(--border); border-radius: var(--r-con); padding: 14px; display: flex; justify-content: center; }
 .qrBox img { width: 100%; max-width: 300px; aspect-ratio: 1; image-rendering: pixelated; }
 .qrBox.dim img { opacity: .15; }
 .over { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; font-weight: 700; }
 .regen { display: inline-flex; gap: 8px; align-items: center; background: var(--green-800); color: #fff; border-radius: 999px; padding: 12px 20px; min-height: 48px; }
 .exp { text-align: center; font-size: 12px; color: var(--gray-500); margin: 0 0 10px; }
 .link { color: var(--green-800); font-weight: 700; text-decoration: underline; font-size: 12px; }
-.code { width: 100%; display: flex; align-items: center; justify-content: space-between; background: var(--gray-50); border-radius: 16px; padding: 0 18px; min-height: 60px; font-size: 20px; font-weight: 800; letter-spacing: .06em; }
+.code { width: 100%; display: flex; align-items: center; justify-content: space-between; background: var(--gray-50); border-radius: var(--r-el); padding: 0 18px; min-height: 60px; font-size: 20px; font-weight: 800; letter-spacing: .06em; }
 .copy { display: inline-flex; align-items: center; gap: 8px; color: var(--green-600); font-size: 12px; letter-spacing: 0; font-weight: 600; }
 .foot { text-align: center; margin: 10px 0 0; font-size: 12px; color: var(--gray-500); }
 .inlineWrap .sheet { width: 100%; box-shadow: none; padding: 0; border-radius: 0; background: none; }
