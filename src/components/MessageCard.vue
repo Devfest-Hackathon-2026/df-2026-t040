@@ -56,7 +56,7 @@ function saveEdit() {
 }
 // Secondary AI details ("checked by AI", tone label) appear only after tapping the text.
 const more = ref(false)
-const hasMore = computed(() => (props.u.check?.status === 'auto' && myChecks.value.length > 0) || !!emo.value || (canEdit.value && !!props.superseded))
+const hasMore = computed(() => (props.isMe && props.u.check?.status === 'auto' && myChecks.value.length > 0) || !!emo.value || (canEdit.value && !!props.superseded))
 const canEdit = computed(() => props.isMe && props.u.final && props.u.kind !== 'image' && !!props.u.original)
 const showAsk = computed(() => props.isMe && check.value?.status === 'pending')
 
@@ -104,9 +104,9 @@ const live = computed(() => !props.u.final && props.u.kind === 'voice')
 const reading = computed(() => !props.u.final && props.u.kind === 'image')
 const canPlay = computed(() => props.u.final && !props.isMe && !same.value && !!translated.value)
 const canExpress = computed(() => canPlay.value && !!emo.value)
-// the speaker's confirmation sits in its own card under the bubble (listeners get one quiet line instead)
-const showCline = computed(() => !!props.u.check && props.u.check.status !== 'auto' && myChecks.value.length > 0 && !props.isMe && !(props.superseded && props.u.check.status === 'pending'))
-const showCheck = computed(() => !!props.u.check && props.u.check.status !== 'auto' && myChecks.value.length > 0 && !showCline.value)
+// the speaker's confirmation sits in its own card under the bubble
+// price / allergy / medicine checks are for the speaker only; listeners just get the (corrected) translation
+const showCheck = computed(() => props.isMe && !!props.u.check && props.u.check.status !== 'auto' && myChecks.value.length > 0)
 </script>
 
 <template>
@@ -152,7 +152,7 @@ const showCheck = computed(() => !!props.u.check && props.u.check.status !== 'au
     <p v-if="ctxNote" class="cnote"><span aria-hidden="true">💡</span>{{ ctxNote }}</p>
 
     <!-- facts AI verified by itself: a small badge, nobody is asked -->
-    <template v-if="check?.status === 'auto'">
+    <template v-if="isMe && check?.status === 'auto'">
       <details v-if="myChecks.length && more" class="auto" open>
       <summary><Icon name="check" :size="14" />{{ d.checkAuto }}</summary>
       <ul>
@@ -161,12 +161,6 @@ const showCheck = computed(() => !!props.u.check && props.u.check.status !== 'au
     </details>
     </template>
 
-    <!-- listener: one quiet line — the details are already in the big text above -->
-    <p v-else-if="check && myChecks.length && !isMe && !(superseded && check.status === 'pending')" class="cline" :class="check.status">
-      <Icon v-if="check.status === 'confirmed' || check.status === 'corrected'" name="check" :size="14" />
-      <span v-else aria-hidden="true">⏳</span>
-      {{ check.status === 'fixing' ? d.checkFixing : check.status === 'corrected' ? d.checkCorrected : check.status === 'confirmed' ? d.checkConfirmed : d.checkPending }}
-    </p>
 
 
     <p v-if="emo && more" class="emo">
@@ -245,8 +239,6 @@ const showCheck = computed(() => !!props.u.check && props.u.check.status !== 'au
 .pmini { width: 34px; height: 34px; flex: none; border-radius: var(--r-el); background: var(--ink); color: #fff; display: inline-flex; align-items: center; justify-content: center; transition: transform var(--fast); }
 .pmini:active { transform: scale(.94); }
 .pmini.alt { width: 30px; height: 30px; background: #fff; color: var(--ink); border: 1px solid var(--border); }
-.cline { margin: 0; font-size: 12px; font-weight: 700; color: var(--warn-ink); display: inline-flex; align-items: center; gap: 4px; align-self: flex-start; background: var(--warn-bg); border-radius: var(--r-inner); padding: 3px 8px; }
-.cline.confirmed, .cline.corrected { color: var(--success); background: #eef7ea; }
 time { font-size: 11px; color: var(--gray-500); font-variant-numeric: tabular-nums; }
 .rec { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); margin: 0 4px; animation: blink 1.2s infinite; }
 @keyframes blink { 50% { opacity: .35; } }
